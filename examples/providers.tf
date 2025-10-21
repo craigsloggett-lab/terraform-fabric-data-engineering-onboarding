@@ -1,4 +1,3 @@
 provider "fabric" {
   preview = true
 }
-

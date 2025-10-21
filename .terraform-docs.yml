@@ -19,9 +19,9 @@ content: |-
   ```
 
   ```hcl
-  # terraform.tfvars
+  # defaults.auto.tfvars
 
-  {{ include "examples/terraform.tfvars.example" }}
+  {{ include "examples/defaults.auto.tfvars.example" }}
   ```
 
   {{ .Requirements }}
