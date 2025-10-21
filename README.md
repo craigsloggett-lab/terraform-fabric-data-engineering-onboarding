@@ -6,7 +6,8 @@ A Terraform module used to onboard Data Engineers to the Microsoft Fabric platfo
 
 ```hcl
 module "terraform_fabric_data_engineering_onboarding" {
-  source = "../"
+  source  = "app.terraform.io/craigsloggett-lab/fabric/data-engineering-onboarding"
+  version = "0.1.0"
 }
 
 # variables.tf
