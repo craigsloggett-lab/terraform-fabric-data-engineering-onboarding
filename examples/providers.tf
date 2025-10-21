@@ -1,1 +1,4 @@
+provider "fabric" {
+  preview = true
+}
 
