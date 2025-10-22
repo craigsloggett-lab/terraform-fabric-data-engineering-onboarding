@@ -51,13 +51,15 @@ provider "fabric" {
 
 provider "azuread" {}
 
+provider "tfe" {}
+
 # inputs.auto.tfvars
 
 environment                   = "dev"
-fabric_workspace_name         = "ws-banana-123000100101-233"
-fabric_environment_name       = "env-banana-123000100101-233"
-fabric_spark_custom_pool_name = "sprk-banana-123000100101-233"
-fabric_lakehouse_name         = "lh_banana_123000100101_233"
+fabric_workspace_name         = "banana_123000100101-233"
+fabric_environment_name       = "banana-123000100101-233"
+fabric_spark_custom_pool_name = "banana-123000100101-233"
+fabric_lakehouse_name         = "banana_123000100101_233"
 ```
 
 ## Requirements
@@ -67,6 +69,7 @@ fabric_lakehouse_name         = "lh_banana_123000100101_233"
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.7 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 3.6.0 |
 | <a name="requirement_fabric"></a> [fabric](#requirement\_fabric) | >= 1.6.0 |
+| <a name="requirement_tfe"></a> [tfe](#requirement\_tfe) | >= 0.70.0 |
 
 ## Providers
 
@@ -74,7 +77,7 @@ fabric_lakehouse_name         = "lh_banana_123000100101_233"
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 3.6.0 |
 | <a name="provider_fabric"></a> [fabric](#provider\_fabric) | >= 1.6.0 |
-| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
+| <a name="provider_tfe"></a> [tfe](#provider\_tfe) | >= 0.70.0 |
 
 ## Modules
 
@@ -98,7 +101,8 @@ No modules.
 | [azuread_group.fabric_workspace_members](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [fabric_capacity.shared](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/data-sources/capacity) | data source |
 | [fabric_connections.all](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/data-sources/connections) | data source |
-| [terraform_remote_state.data_platform_shared_services](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
+| [tfe_organization.this](https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/data-sources/organization) | data source |
+| [tfe_outputs.data_platform_shared_services](https://registry.terraform.io/providers/hashicorp/tfe/latest/docs/data-sources/outputs) | data source |
 
 ## Inputs
 
@@ -107,7 +111,7 @@ No modules.
 | <a name="input_data_platform_shared_services_workspace_name"></a> [data\_platform\_shared\_services\_workspace\_name](#input\_data\_platform\_shared\_services\_workspace\_name) | The name of the HCP Terraform workspace managing the Data Platform shared infrastructure. | `string` | `"azure-fabric-shared-services"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment the Data Engineer is being onboarded to. | `string` | n/a | yes |
 | <a name="input_fabric_environment_name"></a> [fabric\_environment\_name](#input\_fabric\_environment\_name) | The name of the Fabric environment being created. | `string` | n/a | yes |
-| <a name="input_fabric_lakehouse_name"></a> [fabric\_lakehouse\_name](#input\_fabric\_lakehouse\_name) | The name of the LakeHouse being created. | `string` | n/a | yes |
+| <a name="input_fabric_lakehouse_name"></a> [fabric\_lakehouse\_name](#input\_fabric\_lakehouse\_name) | The name of the Lakehouse being created. | `string` | n/a | yes |
 | <a name="input_fabric_spark_custom_pool_name"></a> [fabric\_spark\_custom\_pool\_name](#input\_fabric\_spark\_custom\_pool\_name) | The name of the Spark Custom Pool being created. | `string` | n/a | yes |
 | <a name="input_fabric_workspace_admin_group_display_names"></a> [fabric\_workspace\_admin\_group\_display\_names](#input\_fabric\_workspace\_admin\_group\_display\_names) | A set of Microsoft Entra ID group display names to assign the Fabric workspace Admin role to. | `set(string)` | <pre>[<br/>  "Data Platform Engineering"<br/>]</pre> | no |
 | <a name="input_fabric_workspace_github_repository"></a> [fabric\_workspace\_github\_repository](#input\_fabric\_workspace\_github\_repository) | Configuration parameters for the GitHub repository backing the Fabric workspace. | <pre>object({<br/>    owner = string<br/>    name  = string<br/>  })</pre> | <pre>{<br/>  "name": "microsoft-fabric-workspaces",<br/>  "owner": "craigsloggett-lab"<br/>}</pre> | no |

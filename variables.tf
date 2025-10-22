@@ -51,13 +51,13 @@ variable "fabric_workspace_name" {
   description = "The name of the Fabric workspace being created."
 
   validation {
-    condition     = can(regex("^ws-", var.fabric_workspace_name))
-    error_message = "The Fabric workspace name must start with 'ws-'."
+    condition     = length(var.fabric_workspace_name) <= 256
+    error_message = "The name must be at most 256 characters long."
   }
 
   validation {
-    condition     = !can(regex("_", var.fabric_workspace_name))
-    error_message = "The Fabric workspace name must not contain underscores '_', use dashes instead '-'."
+    condition     = !(var.fabric_workspace_name == "." || var.fabric_workspace_name == ":")
+    error_message = "The name must not be '.' or ':'."
   }
 }
 
@@ -69,9 +69,29 @@ variable "fabric_environment_name" {
 variable "fabric_spark_custom_pool_name" {
   type        = string
   description = "The name of the Spark Custom Pool being created."
+
+  validation {
+    condition     = length(var.fabric_spark_custom_pool_name) <= 64
+    error_message = "The name must be at most 64 characters long."
+  }
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9-_ ]+$", var.fabric_spark_custom_pool_name))
+    error_message = "The name must contain only letters, numbers, dashes, underscores, or spaces."
+  }
+
+  validation {
+    condition     = !(var.fabric_spark_custom_pool_name == "." || var.fabric_spark_custom_pool_name == ":")
+    error_message = "The name must not be '.' or ':'."
+  }
 }
 
 variable "fabric_lakehouse_name" {
   type        = string
-  description = "The name of the LakeHouse being created."
+  description = "The name of the Lakehouse being created."
+
+  validation {
+    condition     = !can(regex("-", var.fabric_lakehouse_name))
+    error_message = "The name must not contain dashes '-', use underscores instead '_'."
+  }
 }
