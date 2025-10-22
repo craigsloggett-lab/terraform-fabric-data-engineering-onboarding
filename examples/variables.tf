@@ -1,5 +1,3 @@
-# Input Parameters
-
 variable "environment" {
   type        = string
   description = "The environment the Data Engineer is being onboarded to."
