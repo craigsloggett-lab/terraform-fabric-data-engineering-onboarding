@@ -7,6 +7,8 @@ content: |-
   ## Usage
 
   ```hcl
+  # main.tf
+
   {{ include "examples/main.tf" }}
 
   # variables.tf
