@@ -10,36 +10,6 @@ variable "data_platform_shared_services_workspace_name" {
   default     = "azure-fabric-shared-services"
 }
 
-variable "environment" {
-  type        = string
-  description = "The environment the Data Engineer is being onboarded to."
-  default     = "dev"
-}
-
-variable "fabric_workspace_name" {
-  type        = string
-  description = "The name of the Fabric workspace being created."
-  default     = "ws-banana-123000100101-233"
-}
-
-variable "fabric_environment_name" {
-  type        = string
-  description = "The name of the Fabric environment being created."
-  default     = "env-banana-123000100101-233"
-}
-
-variable "fabric_spark_custom_pool_name" {
-  type        = string
-  description = "The name of the Spark Custom Pool being created."
-  default     = "sprk-banana-123000100101-233"
-}
-
-variable "fabric_lakehouse_name" {
-  type        = string
-  description = "The name of the LakeHouse being created."
-  default     = "lh_banana_123000100101_233"
-}
-
 variable "fabric_workspace_admin_group_display_names" {
   type        = set(string)
   description = "A set of Microsoft Entra ID group display names to assign the Fabric workspace Admin role to."
@@ -62,4 +32,46 @@ variable "fabric_workspace_github_repository" {
     owner = "craigsloggett-lab"
     name  = "microsoft-fabric-workspaces"
   }
+}
+
+# Input Parameters
+
+variable "environment" {
+  type        = string
+  description = "The environment the Data Engineer is being onboarded to."
+
+  validation {
+    condition     = var.environment == "dev"
+    error_message = "The environment must be set to 'dev'."
+  }
+}
+
+variable "fabric_workspace_name" {
+  type        = string
+  description = "The name of the Fabric workspace being created."
+
+  validation {
+    condition     = can(regex("^ws-", var.fabric_workspace_name))
+    error_message = "The Fabric workspace name must start with 'ws-'."
+  }
+
+  validation {
+    condition     = !can(regex("_", var.fabric_workspace_name))
+    error_message = "The Fabric workspace name must not contain underscores '_', use dashes instead '-'."
+  }
+}
+
+variable "fabric_environment_name" {
+  type        = string
+  description = "The name of the Fabric environment being created."
+}
+
+variable "fabric_spark_custom_pool_name" {
+  type        = string
+  description = "The name of the Spark Custom Pool being created."
+}
+
+variable "fabric_lakehouse_name" {
+  type        = string
+  description = "The name of the LakeHouse being created."
 }
