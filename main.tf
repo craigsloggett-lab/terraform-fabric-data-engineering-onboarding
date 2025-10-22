@@ -1,16 +1,14 @@
-data "terraform_remote_state" "data_platform_shared_services" {
-  backend = "remote"
+data "tfe_organization" "this" {
+  name = var.hcp_terraform_organization_name
+}
 
-  config = {
-    organization = var.hcp_terraform_organization_name
-    workspaces = {
-      name = var.data_platform_shared_services_workspace_name
-    }
-  }
+data "tfe_outputs" "data_platform_shared_services" {
+  organization = data.tfe_organization.this.name
+  workspace    = var.data_platform_shared_services_workspace_name
 }
 
 data "fabric_capacity" "shared" {
-  display_name = data.terraform_remote_state.data_platform_shared_services.outputs.fabric_capacity_names[var.environment]
+  display_name = data.tfe_outputs.data_platform_shared_services.values.fabric_capacity_names[var.environment]
 }
 
 data "azuread_group" "fabric_workspace_admins" {
@@ -127,7 +125,7 @@ resource "fabric_workspace_git" "github" {
     owner_name        = var.fabric_workspace_github_repository.owner
     repository_name   = var.fabric_workspace_github_repository.name
     branch_name       = "main"
-    directory_name    = "/"
+    directory_name    = "/${fabric_workspace.this.display_name}"
   }
 
   git_credentials = {

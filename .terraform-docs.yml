@@ -7,6 +7,8 @@ content: |-
   ## Usage
 
   ```hcl
+  # main.tf
+
   {{ include "examples/main.tf" }}
 
   # variables.tf
@@ -16,12 +18,10 @@ content: |-
   # providers.tf
 
   {{ include "examples/providers.tf" }}
-  ```
 
-  ```hcl
-  # defaults.auto.tfvars
+  # inputs.auto.tfvars
 
-  {{ include "examples/defaults.auto.tfvars.example" }}
+  {{ include "examples/inputs.auto.tfvars.example" }}
   ```
 
   {{ .Requirements }}
