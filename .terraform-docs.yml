@@ -16,12 +16,10 @@ content: |-
   # providers.tf
 
   {{ include "examples/providers.tf" }}
-  ```
 
-  ```hcl
-  # defaults.auto.tfvars
+  # inputs.auto.tfvars
 
-  {{ include "examples/defaults.auto.tfvars.example" }}
+  {{ include "examples/inputs.auto.tfvars.example" }}
   ```
 
   {{ .Requirements }}

@@ -6,13 +6,44 @@ A Terraform module used to onboard Data Engineers to the Microsoft Fabric platfo
 
 ```hcl
 module "terraform_fabric_data_engineering_onboarding" {
-  source  = "app.terraform.io/craigsloggett-lab/fabric/data-engineering-onboarding"
-  version = "0.1.0"
+  source  = "app.terraform.io/craigsloggett-lab/data-engineering-onboarding/fabric"
+  version = "0.1.2"
+
+  environment                   = var.environment
+  fabric_workspace_name         = var.fabric_workspace_name
+  fabric_environment_name       = var.fabric_environment_name
+  fabric_spark_custom_pool_name = var.fabric_spark_custom_pool_name
+  fabric_lakehouse_name         = var.fabric_lakehouse_name
 }
 
 # variables.tf
 
+# Input Parameters
 
+variable "environment" {
+  type        = string
+  description = "The environment the Data Engineer is being onboarded to."
+}
+
+variable "fabric_workspace_name" {
+  type        = string
+  description = "The name of the Fabric workspace being created."
+}
+
+variable "fabric_environment_name" {
+  type        = string
+  description = "The name of the Fabric environment being created."
+}
+
+variable "fabric_spark_custom_pool_name" {
+  type        = string
+  description = "The name of the Spark Custom Pool being created."
+}
+
+variable "fabric_lakehouse_name" {
+  type        = string
+  description = "The name of the LakeHouse being created."
+}
 
 # providers.tf
 
@@ -21,12 +52,14 @@ provider "fabric" {
 }
 
 provider "azuread" {}
-```
 
-```hcl
-# defaults.auto.tfvars
+# inputs.auto.tfvars
 
-
+environment                   = "dev"
+fabric_workspace_name         = "ws-banana-123000100101-233"
+fabric_environment_name       = "env-banana-123000100101-233"
+fabric_spark_custom_pool_name = "sprk-banana-123000100101-233"
+fabric_lakehouse_name         = "lh_banana_123000100101_233"
 ```
 
 ## Requirements
@@ -74,14 +107,14 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_data_platform_shared_services_workspace_name"></a> [data\_platform\_shared\_services\_workspace\_name](#input\_data\_platform\_shared\_services\_workspace\_name) | The name of the HCP Terraform workspace managing the Data Platform shared infrastructure. | `string` | `"azure-fabric-shared-services"` | no |
-| <a name="input_environment"></a> [environment](#input\_environment) | The environment the Data Engineer is being onboarded to. | `string` | `"dev"` | no |
-| <a name="input_fabric_environment_name"></a> [fabric\_environment\_name](#input\_fabric\_environment\_name) | The name of the Fabric environment being created. | `string` | `"env-banana-123000100101-233"` | no |
-| <a name="input_fabric_lakehouse_name"></a> [fabric\_lakehouse\_name](#input\_fabric\_lakehouse\_name) | The name of the LakeHouse being created. | `string` | `"lh_banana_123000100101_233"` | no |
-| <a name="input_fabric_spark_custom_pool_name"></a> [fabric\_spark\_custom\_pool\_name](#input\_fabric\_spark\_custom\_pool\_name) | The name of the Spark Custom Pool being created. | `string` | `"sprk-banana-123000100101-233"` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | The environment the Data Engineer is being onboarded to. | `string` | n/a | yes |
+| <a name="input_fabric_environment_name"></a> [fabric\_environment\_name](#input\_fabric\_environment\_name) | The name of the Fabric environment being created. | `string` | n/a | yes |
+| <a name="input_fabric_lakehouse_name"></a> [fabric\_lakehouse\_name](#input\_fabric\_lakehouse\_name) | The name of the LakeHouse being created. | `string` | n/a | yes |
+| <a name="input_fabric_spark_custom_pool_name"></a> [fabric\_spark\_custom\_pool\_name](#input\_fabric\_spark\_custom\_pool\_name) | The name of the Spark Custom Pool being created. | `string` | n/a | yes |
 | <a name="input_fabric_workspace_admin_group_display_names"></a> [fabric\_workspace\_admin\_group\_display\_names](#input\_fabric\_workspace\_admin\_group\_display\_names) | A set of Microsoft Entra ID group display names to assign the Fabric workspace Admin role to. | `set(string)` | <pre>[<br/>  "Data Platform Engineering"<br/>]</pre> | no |
 | <a name="input_fabric_workspace_github_repository"></a> [fabric\_workspace\_github\_repository](#input\_fabric\_workspace\_github\_repository) | Configuration parameters for the GitHub repository backing the Fabric workspace. | <pre>object({<br/>    owner = string<br/>    name  = string<br/>  })</pre> | <pre>{<br/>  "name": "microsoft-fabric-workspaces",<br/>  "owner": "craigsloggett-lab"<br/>}</pre> | no |
 | <a name="input_fabric_workspace_member_group_display_names"></a> [fabric\_workspace\_member\_group\_display\_names](#input\_fabric\_workspace\_member\_group\_display\_names) | A set of Microsoft Entra ID group display names to assign the Fabric workspace Member role to. | `set(string)` | <pre>[<br/>  "Data Engineering"<br/>]</pre> | no |
-| <a name="input_fabric_workspace_name"></a> [fabric\_workspace\_name](#input\_fabric\_workspace\_name) | The name of the Fabric workspace being created. | `string` | `"ws-banana-123000100101-233"` | no |
+| <a name="input_fabric_workspace_name"></a> [fabric\_workspace\_name](#input\_fabric\_workspace\_name) | The name of the Fabric workspace being created. | `string` | n/a | yes |
 | <a name="input_hcp_terraform_organization_name"></a> [hcp\_terraform\_organization\_name](#input\_hcp\_terraform\_organization\_name) | The name of the HCP Terraform organization to find shared remote state. | `string` | `"craigsloggett-lab"` | no |
 
 ## Outputs
