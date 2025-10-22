@@ -18,8 +18,6 @@ module "terraform_fabric_data_engineering_onboarding" {
 
 # variables.tf
 
-# Input Parameters
-
 variable "environment" {
   type        = string
   description = "The environment the Data Engineer is being onboarded to."
