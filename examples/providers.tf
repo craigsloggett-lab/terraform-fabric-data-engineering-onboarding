@@ -3,3 +3,5 @@ provider "fabric" {
 }
 
 provider "azuread" {}
+
+provider "tfe" {}

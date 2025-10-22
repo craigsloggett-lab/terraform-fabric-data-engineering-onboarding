@@ -10,5 +10,9 @@ terraform {
       source  = "hashicorp/azuread"
       version = "3.6.0"
     }
+    tfe = {
+      source  = "hashicorp/tfe"
+      version = "0.70.0"
+    }
   }
 }
