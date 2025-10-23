@@ -9,7 +9,7 @@ A Terraform module used to onboard Data Engineers to the Microsoft Fabric platfo
 
 module "terraform_fabric_data_engineering_onboarding" {
   source  = "app.terraform.io/craigsloggett-lab/data-engineering-onboarding/fabric"
-  version = "0.2.0"
+  version = "0.2.2"
 
   environment                   = var.environment
   fabric_workspace_name         = var.fabric_workspace_name
@@ -58,7 +58,7 @@ provider "tfe" {}
 # inputs.auto.tfvars
 
 environment                   = "dev"
-fabric_workspace_name         = "banana_123000100101-233"
+fabric_workspace_name         = "banana-123000100101-233"
 fabric_environment_name       = "banana-123000100101-233"
 fabric_spark_custom_pool_name = "banana-123000100101-233"
 fabric_lakehouse_name         = "banana_123000100101_233"
