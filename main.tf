@@ -125,7 +125,7 @@ resource "fabric_workspace_git" "github" {
     owner_name        = var.fabric_workspace_github_repository.owner
     repository_name   = var.fabric_workspace_github_repository.name
     branch_name       = "main"
-    directory_name    = "/${fabric_workspace.this.display_name}"
+    directory_name    = "/"
   }
 
   git_credentials = {
