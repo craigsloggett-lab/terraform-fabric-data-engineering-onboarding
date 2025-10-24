@@ -148,3 +148,25 @@ resource "fabric_lakehouse" "gold" {
   display_name = "${var.fabric_lakehouse_name}_gold"
   workspace_id = fabric_workspace.this.id
 }
+
+resource "fabric_copy_job" "blobstorage_to_bronze_lakehouse" {
+  for_each = local.azure_blobs_connection_ids
+
+  display_name = "Blob Storage to Bronze Lakehouse"
+  description  = "A Copy Job to copy data from Azure Blob Storage to a Fabric Lakehouse."
+  workspace_id = fabric_workspace.this.id
+  format       = "Default"
+
+  definition = {
+    "copyjob-content.json" = {
+      source = "${path.module}/templates/blobstorage-to-lakehouse-copyjob-content.json.tmpl"
+
+      tokens = {
+        NAME          = "Blob Storage to Lakehouse"
+        CONNECTION_ID = each.key
+        WORKSPACE_ID  = fabric_workspace.this.id
+        LAKEHOUSE_ID  = fabric_lakehouse.bronze.id
+      }
+    }
+  }
+}
