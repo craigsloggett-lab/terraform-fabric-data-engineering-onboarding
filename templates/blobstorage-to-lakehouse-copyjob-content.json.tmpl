@@ -1,5 +1,5 @@
 {
-  "name": "${NAME}",
+  "name": "{{ .NAME }}",
   "properties": {
     "jobMode": "Batch",
     "source": {
@@ -7,7 +7,7 @@
       "connectionSettings": {
         "type": "AzureBlobStorage",
         "externalReferences": {
-          "connection": "${CONNECTION_ID}"
+          "connection": "{{ .CONNECTION_ID }}"
         }
       }
     },
@@ -16,8 +16,8 @@
       "connectionSettings": {
         "type": "Lakehouse",
         "typeProperties": {
-          "workspaceId": "${WORKSPACE_ID}",
-          "artifactId": "${LAKEHOUSE_ID}",
+          "workspaceId": "{{ .WORKSPACE_ID }}",
+          "artifactId": "{{ .LAKEHOUSE_ID }}",
           "rootFolder": "Files"
         }
       }
