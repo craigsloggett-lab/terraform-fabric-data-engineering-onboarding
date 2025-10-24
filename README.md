@@ -89,6 +89,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [fabric_copy_job.blobstorage_to_bronze_lakehouse](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/copy_job) | resource |
 | [fabric_environment.this](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/environment) | resource |
 | [fabric_lakehouse.bronze](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/lakehouse) | resource |
 | [fabric_lakehouse.gold](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/lakehouse) | resource |

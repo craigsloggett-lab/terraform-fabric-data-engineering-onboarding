@@ -1,0 +1,55 @@
+{
+  "name": "${NAME}",
+  "properties": {
+    "jobMode": "Batch",
+    "source": {
+      "type": "Binary",
+      "connectionSettings": {
+        "type": "AzureBlobStorage",
+        "externalReferences": {
+          "connection": "${CONNECTION_ID}"
+        }
+      }
+    },
+    "destination": {
+      "type": "Binary",
+      "connectionSettings": {
+        "type": "Lakehouse",
+        "typeProperties": {
+          "workspaceId": "${WORKSPACE_ID}",
+          "artifactId": "${LAKEHOUSE_ID}",
+          "rootFolder": "Files"
+        }
+      }
+    },
+    "policy": {
+      "timeout": "0.12:00:00"
+    }
+  },
+  "activities": [
+    {
+      "properties": {
+        "source": {
+          "datasetSettings": {
+            "location": {
+              "type": "AzureBlobStorageLocation",
+              "container": "main"
+            }
+          },
+          "storeSettings": {
+            "recursive": true,
+            "wildcardFileName": "*.csv"
+          }
+        },
+        "destination": {
+          "datasetSettings": {
+            "location": {
+              "type": "LakehouseLocation"
+            }
+          }
+        },
+        "enableStaging": false
+      }
+    }
+  ]
+}
