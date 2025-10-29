@@ -28,16 +28,7 @@ main() {
   repository_path="${FABRIC_WORKSPACE_DISPLAY_NAME}/.gitkeep"
 
   # Create a new directory in the GitHub repository that will be used by the new Fabric workspace.
-  status="$(curl "$@" "${contents_endpoint}/${repository_path}")"
-
-  case "${status}" in
-    200 | 201 | 204 | 409)
-      return 0
-      ;;
-    *)
-      exit 1
-      ;;
-  esac
+  curl "$@" "${contents_endpoint}/${repository_path}" >/dev/null
 }
 
 main "$@"
