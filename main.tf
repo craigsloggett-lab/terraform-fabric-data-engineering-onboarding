@@ -112,6 +112,22 @@ resource "fabric_spark_workspace_settings" "this" {
   }
 }
 
+resource "terraform_data" "fabric_workspace_git_create_directory" {
+  triggers_replace = [
+    fabric_workspace.this.display_name
+  ]
+
+  provisioner "local-exec" {
+    environment = {
+      GITHUB_REPOSITORY_OWNER       = var.fabric_workspace_github_repository.owner
+      GITHUB_REPOSITORY_NAME        = var.fabric_workspace_github_repository.name
+      FABRIC_WORKSPACE_DISPLAY_NAME = fabric_workspace.this.display_name
+    }
+
+    command = "${path.module}/scripts/create_workspace_directory.sh"
+  }
+}
+
 data "fabric_connections" "all" {}
 
 resource "fabric_workspace_git" "github" {
@@ -125,7 +141,7 @@ resource "fabric_workspace_git" "github" {
     owner_name        = var.fabric_workspace_github_repository.owner
     repository_name   = var.fabric_workspace_github_repository.name
     branch_name       = "main"
-    directory_name    = "/"
+    directory_name    = "/${fabric_workspace.this.display_name}"
   }
 
   git_credentials = {
