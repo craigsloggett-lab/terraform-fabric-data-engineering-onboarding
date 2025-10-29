@@ -114,11 +114,9 @@ resource "fabric_spark_workspace_settings" "this" {
 
 resource "terraform_data" "fabric_workspace_git_create_directory" {
   triggers_replace = [
-    fabric_connection.github.id,
-    data.azuread_group.data_platform_engineering.object_id
+    fabric_workspace.this.display_name
   ]
 
-  # https://learn.microsoft.com/en-us/rest/api/fabric/core/connections/add-connection-role-assignment?tabs=HTTP#connectionrole
   provisioner "local-exec" {
     environment = {
       GITHUB_REPOSITORY_OWNER       = var.fabric_workspace_github_repository.owner
