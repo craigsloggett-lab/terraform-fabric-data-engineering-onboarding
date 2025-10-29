@@ -9,7 +9,7 @@ A Terraform module used to onboard Data Engineers to the Microsoft Fabric platfo
 
 module "terraform_fabric_data_engineering_onboarding" {
   source  = "app.terraform.io/craigsloggett-lab/data-engineering-onboarding/fabric"
-  version = "0.3.1"
+  version = "0.3.4"
 
   environment                   = var.environment
   fabric_workspace_name         = var.fabric_workspace_name
@@ -79,6 +79,7 @@ fabric_lakehouse_name         = "banana_123000100101_233"
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 3.6.0 |
 | <a name="provider_fabric"></a> [fabric](#provider\_fabric) | >= 1.6.0 |
+| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 | <a name="provider_tfe"></a> [tfe](#provider\_tfe) | >= 0.70.0 |
 
 ## Modules
@@ -100,6 +101,7 @@ No modules.
 | [fabric_workspace_git.github](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/workspace_git) | resource |
 | [fabric_workspace_role_assignment.admins](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/workspace_role_assignment) | resource |
 | [fabric_workspace_role_assignment.members](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/workspace_role_assignment) | resource |
+| [terraform_data.fabric_workspace_git_create_directory](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [azuread_group.fabric_workspace_admins](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.fabric_workspace_members](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [fabric_capacity.shared](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/data-sources/capacity) | data source |
