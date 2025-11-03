@@ -9,7 +9,7 @@ A Terraform module used to onboard Data Engineers to the Microsoft Fabric platfo
 
 module "terraform_fabric_data_engineering_onboarding" {
   source  = "app.terraform.io/craigsloggett-lab/data-engineering-onboarding/fabric"
-  version = "0.4.3"
+  version = "0.4.4"
 
   environment                   = var.environment
   fabric_workspace_name         = var.fabric_workspace_name
@@ -95,6 +95,7 @@ No modules.
 | [fabric_lakehouse.bronze](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/lakehouse) | resource |
 | [fabric_lakehouse.gold](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/lakehouse) | resource |
 | [fabric_lakehouse.silver](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/lakehouse) | resource |
+| [fabric_lakehouse.stone](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/lakehouse) | resource |
 | [fabric_spark_custom_pool.this](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/spark_custom_pool) | resource |
 | [fabric_spark_workspace_settings.this](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/spark_workspace_settings) | resource |
 | [fabric_workspace.this](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/workspace) | resource |

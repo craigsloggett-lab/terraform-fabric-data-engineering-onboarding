@@ -150,6 +150,11 @@ resource "fabric_workspace_git" "github" {
   }
 }
 
+resource "fabric_lakehouse" "stone" {
+  display_name = "${var.fabric_lakehouse_name}_stone"
+  workspace_id = fabric_workspace.this.id
+}
+
 resource "fabric_lakehouse" "bronze" {
   display_name = "${var.fabric_lakehouse_name}_bronze"
   workspace_id = fabric_workspace.this.id
