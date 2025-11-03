@@ -1,9 +1,9 @@
 variables {
   environment                   = "dev"
-  fabric_workspace_name         = "banana-123000100101-233"
-  fabric_environment_name       = "banana-123000100101-233"
-  fabric_spark_custom_pool_name = "banana-123000100101-233"
-  fabric_lakehouse_name         = "banana_123000100101_233"
+  fabric_workspace_name         = "data-engineering-001"
+  fabric_environment_name       = "data-engineering-001"
+  fabric_spark_custom_pool_name = "data-engineering-001"
+  fabric_lakehouse_name         = "data_engineering_001"
 }
 
 run "validate" {
