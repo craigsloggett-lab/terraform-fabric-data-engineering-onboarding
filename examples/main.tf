@@ -1,6 +1,6 @@
 module "terraform_fabric_data_engineering_onboarding" {
   source  = "app.terraform.io/craigsloggett-lab/data-engineering-onboarding/fabric"
-  version = "0.4.1"
+  version = "0.4.3"
 
   environment                   = var.environment
   fabric_workspace_name         = var.fabric_workspace_name
