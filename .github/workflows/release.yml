@@ -34,7 +34,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Prepare
-      if: steps.release.outputs.new_release_published == 'true'
+      # if: steps.release.outputs.new_release_published == 'true'
       id: get-module-metadata
       run: |
         github_repository_url="${{ github.server_url }}/${{ github.repository }}"
@@ -53,11 +53,12 @@ jobs:
         printf 'name=%s' "${module_name}" >> "$GITHUB_OUTPUT"
         printf 'provider=%s' "${module_provider}" >> "$GITHUB_OUTPUT"
     - name: Publish
-      if: steps.release.outputs.new_release_published == 'true'
+      # if: steps.release.outputs.new_release_published == 'true'
       run: |-
         module_name="${{ steps.get-module-metadata.outputs.name }}"
         module_provider="${{ steps.get-module-metadata.outputs.provider }}"
-        module_version="${{ steps.release.outputs.new_release_version }}"
+        #module_version="${{ steps.release.outputs.new_release_version }}"
+        module_version="0.99.0"
         commit_sha="${{ github.sha }}"
         cat << EOF > payload.json
           {
