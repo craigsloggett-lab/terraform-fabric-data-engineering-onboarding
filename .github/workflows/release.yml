@@ -50,8 +50,8 @@ jobs:
         module_name="$(printf '%s\n' "${module_json}" | jq -r '.attributes.name')"
         module_provider="$(printf '%s\n' "${module_json}" | jq -r '.attributes.provider')"
 
-        printf 'name=%s' "${module_name}" >> "$GITHUB_OUTPUT"
-        printf 'provider=%s' "${module_provider}" >> "$GITHUB_OUTPUT"
+        printf 'name=%s\n' "${module_name}" >> "$GITHUB_OUTPUT"
+        printf 'provider=%s\n' "${module_provider}" >> "$GITHUB_OUTPUT"
     - name: Publish
       # if: steps.release.outputs.new_release_published == 'true'
       run: |-
