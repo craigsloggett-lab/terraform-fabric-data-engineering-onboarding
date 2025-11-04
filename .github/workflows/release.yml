@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - main
+    - automate-module-publishing
 
 permissions:
   contents: write
@@ -16,10 +17,14 @@ jobs:
     runs-on: ubuntu-24.04
     # Skip running release workflow on forks
     if: github.repository_owner == 'craigsloggett-lab'
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN }}
+      HCP_TERRAFORM_ORGANIZATION: craigsloggett-lab
     steps:
     - name: Checkout
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
     - name: Release
+      id: release
       uses: cycjimmy/semantic-release-action@ba330626c4750c19d8299de843f05c7aa5574f62 # v5.0.2
       with:
         semantic_version: 23.0.5
@@ -28,3 +33,53 @@ jobs:
           conventional-changelog-conventionalcommits@7.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Prepare
+      if: steps.release.outputs.new_release_published == 'true'
+      id: get-module-metadata
+      run: |
+        github_repository_url="${{ github.server_url }}/${{ github.repository }}"
+        authorization_header="Authorization: Bearer ${TF_TOKEN_app_terraform_io}"
+        list_modules_endpoint="https://app.terraform.io/api/v2/organizations/${HCP_TERRAFORM_ORGANIZATION}/registry-modules"
+
+        module_json="$(
+          curl --request GET --header "${authorization_header}" "${list_modules_endpoint}" |
+            jq -r --arg repository_http_url "${github_repository_url}" '.data[]
+              | select(.attributes["vcs-repo"]["repository-http-url"]
+              | contains($repository_http_url))'
+        )"
+        module_name="$(printf '%s\n' "${module_json}" | jq -r '.attributes.name')"
+        module_provider="$(printf '%s\n' "${module_json}" | jq -r '.attributes.provider')"
+
+        printf 'name=%s' "${module_name}" >> "$GITHUB_OUTPUT"
+        printf 'provider=%s' "${module_provider}" >> "$GITHUB_OUTPUT"
+    - name: Publish
+      if: steps.release.outputs.new_release_published == 'true'
+      run: |-
+        module_name="${{ steps.get-module-metadata.outputs.name }}"
+        module_provider="${{ steps.get-module-metadata.outputs.provider }}"
+        module_version="${{ steps.release.outputs.new_release_version }}"
+        commit_sha="${{ github.sha }}"
+        cat << EOF > payload.json
+          {
+            "data": {
+              "type": "registry-module-versions",
+              "attributes": {
+                "version": "${module_version}",
+                "commit-sha": "${commit_sha}"
+              }
+            }
+          }
+        EOF
+
+        authorization_header="Authorization: Bearer ${TF_TOKEN_app_terraform_io}"
+        content_type_header="Content-Type: application/vnd.api+json"
+
+        registry_modules_endpoint="https://app.terraform.io/api/v2/organizations/${HCP_TERRAFORM_ORGANIZATION}/registry-modules"
+        create_module_version_endpoint="${registry_modules_endpoint}/private/${HCP_TERRAFORM_ORGANIZATION}/${module_name}/${module_provider}/versions"
+
+        curl \
+          --header "${authorization_header}" \
+          --header "${content_type_header}" \
+          --request POST \
+          --data @payload.json \
+          "${create_module_version_endpoint}"
