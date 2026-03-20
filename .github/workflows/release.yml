@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-    - main
+      - main
 
 permissions:
   contents: write
@@ -20,65 +20,60 @@ jobs:
       TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN }}
       HCP_TERRAFORM_ORGANIZATION: craigsloggett-lab
     steps:
-    - name: Checkout
-      uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
-    - name: Release
-      id: release
-      uses: cycjimmy/semantic-release-action@b12c8f6015dc215fe37bc154d4ad456dd3833c90 # v6.0.0
-      with:
-        semantic_version: 23.0.5
-        extra_plugins: |
-          @semantic-release/git@10.0.1
-          conventional-changelog-conventionalcommits@7.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Prepare
-      if: steps.release.outputs.new_release_published == 'true'
-      id: get-module-metadata
-      run: |
-        github_repository_url="${{ github.server_url }}/${{ github.repository }}"
-        authorization_header="Authorization: Bearer ${TF_TOKEN_app_terraform_io}"
-        list_modules_endpoint="https://app.terraform.io/api/v2/organizations/${HCP_TERRAFORM_ORGANIZATION}/registry-modules"
+      - name: Checkout
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - name: Create a GitHub Release
+        id: release
+        uses: craigsloggett/create-github-release@bef3a8d44ef83bb53291139c5757dab76d087f16 # v1.0.9
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare
+        if: steps.release.outputs.new-release-published == 'true'
+        id: get-module-metadata
+        run: |
+          github_repository_url="${{ github.server_url }}/${{ github.repository }}"
+          authorization_header="Authorization: Bearer ${TF_TOKEN_app_terraform_io}"
+          list_modules_endpoint="https://app.terraform.io/api/v2/organizations/${HCP_TERRAFORM_ORGANIZATION}/registry-modules"
 
-        module_json="$(
-          curl --request GET --header "${authorization_header}" "${list_modules_endpoint}" |
-            jq -r --arg repository_http_url "${github_repository_url}" '.data[]
-              | select(.attributes["vcs-repo"]["repository-http-url"]
-              | contains($repository_http_url))'
-        )"
-        module_name="$(printf '%s\n' "${module_json}" | jq -r '.attributes.name')"
-        module_provider="$(printf '%s\n' "${module_json}" | jq -r '.attributes.provider')"
+          module_json="$(
+            curl --request GET --header "${authorization_header}" "${list_modules_endpoint}" |
+              jq -r --arg repository_http_url "${github_repository_url}" '.data[]
+                | select(.attributes["vcs-repo"]["repository-http-url"]
+                | contains($repository_http_url))'
+          )"
+          module_name="$(printf '%s\n' "${module_json}" | jq -r '.attributes.name')"
+          module_provider="$(printf '%s\n' "${module_json}" | jq -r '.attributes.provider')"
 
-        printf 'name=%s\n' "${module_name}" >> "$GITHUB_OUTPUT"
-        printf 'provider=%s\n' "${module_provider}" >> "$GITHUB_OUTPUT"
-    - name: Publish
-      if: steps.release.outputs.new_release_published == 'true'
-      run: |-
-        module_name="${{ steps.get-module-metadata.outputs.name }}"
-        module_provider="${{ steps.get-module-metadata.outputs.provider }}"
-        module_version="${{ steps.release.outputs.new_release_version }}"
-        commit_sha="${{ github.sha }}"
-        cat << EOF > payload.json
-          {
-            "data": {
-              "type": "registry-module-versions",
-              "attributes": {
-                "version": "${module_version}",
-                "commit-sha": "${commit_sha}"
+          printf 'name=%s\n' "${module_name}" >> "$GITHUB_OUTPUT"
+          printf 'provider=%s\n' "${module_provider}" >> "$GITHUB_OUTPUT"
+      - name: Publish
+        if: steps.release.outputs.new-release-published == 'true'
+        run: |-
+          module_name="${{ steps.get-module-metadata.outputs.name }}"
+          module_provider="${{ steps.get-module-metadata.outputs.provider }}"
+          module_version="${{ steps.release.outputs.new-release-version }}"
+          commit_sha="${{ github.sha }}"
+          cat << EOF > payload.json
+            {
+              "data": {
+                "type": "registry-module-versions",
+                "attributes": {
+                  "version": "${module_version}",
+                  "commit-sha": "${commit_sha}"
+                }
               }
             }
-          }
-        EOF
+          EOF
 
-        authorization_header="Authorization: Bearer ${TF_TOKEN_app_terraform_io}"
-        content_type_header="Content-Type: application/vnd.api+json"
+          authorization_header="Authorization: Bearer ${TF_TOKEN_app_terraform_io}"
+          content_type_header="Content-Type: application/vnd.api+json"
 
-        registry_modules_endpoint="https://app.terraform.io/api/v2/organizations/${HCP_TERRAFORM_ORGANIZATION}/registry-modules"
-        create_module_version_endpoint="${registry_modules_endpoint}/private/${HCP_TERRAFORM_ORGANIZATION}/${module_name}/${module_provider}/versions"
+          registry_modules_endpoint="https://app.terraform.io/api/v2/organizations/${HCP_TERRAFORM_ORGANIZATION}/registry-modules"
+          create_module_version_endpoint="${registry_modules_endpoint}/private/${HCP_TERRAFORM_ORGANIZATION}/${module_name}/${module_provider}/versions"
 
-        curl \
-          --header "${authorization_header}" \
-          --header "${content_type_header}" \
-          --request POST \
-          --data @payload.json \
-          "${create_module_version_endpoint}"
+          curl \
+            --header "${authorization_header}" \
+            --header "${content_type_header}" \
+            --request POST \
+            --data @payload.json \
+            "${create_module_version_endpoint}"
