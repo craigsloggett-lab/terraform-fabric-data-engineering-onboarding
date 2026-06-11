@@ -67,7 +67,7 @@ fabric_lakehouse_name         = "data_engineering_001"
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.7 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 3.6.0 |
 | <a name="requirement_fabric"></a> [fabric](#requirement\_fabric) | >= 1.6.0 |
@@ -76,7 +76,7 @@ fabric_lakehouse_name         = "data_engineering_001"
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 3.6.0 |
 | <a name="provider_fabric"></a> [fabric](#provider\_fabric) | >= 1.6.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
@@ -89,7 +89,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [fabric_copy_job.blobstorage_to_bronze_lakehouse](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/copy_job) | resource |
 | [fabric_environment.this](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/environment) | resource |
 | [fabric_lakehouse.bronze](https://registry.terraform.io/providers/microsoft/fabric/latest/docs/resources/lakehouse) | resource |
@@ -113,7 +113,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_data_platform_shared_services_workspace_name"></a> [data\_platform\_shared\_services\_workspace\_name](#input\_data\_platform\_shared\_services\_workspace\_name) | The name of the HCP Terraform workspace managing the Data Platform shared infrastructure. | `string` | `"azure-fabric-shared-services"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment the Data Engineer is being onboarded to. | `string` | n/a | yes |
 | <a name="input_fabric_environment_name"></a> [fabric\_environment\_name](#input\_fabric\_environment\_name) | The name of the Fabric environment being created. | `string` | n/a | yes |
