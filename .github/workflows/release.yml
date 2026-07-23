@@ -21,7 +21,7 @@ jobs:
       HCP_TERRAFORM_ORGANIZATION: craigsloggett-lab
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Create a GitHub Release
         id: release
         uses: craigsloggett/create-github-release@ca381e65d8d9bc17c1ce58c4bd8c54d8381d064b # v1.1.0
